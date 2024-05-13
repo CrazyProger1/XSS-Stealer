@@ -20,7 +20,7 @@ python -m stealer
 
 ### Passwords-Telegram
 
-Steals the password using form autofill and sends it to the Telegram Bot.
+Steals the password and login using form autofill and sends it to the Telegram Bot.
 
 **XSS-Types:**
 
@@ -60,7 +60,7 @@ Steals the cookies and sends it to the Telegram Bot.
 
 ### Passwords-Server
 
-Steals the password using form autofill and sends it to the Server.
+Steals the password and login using form autofill and sends it to the Server.
 
 **XSS-Types:**
 
