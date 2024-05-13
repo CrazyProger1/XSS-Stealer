@@ -4,6 +4,8 @@ import sys
 from pathlib import Path
 from typing import Sequence, Iterable
 
+import pyperclip
+import colorama
 from jinja2 import Environment, FileSystemLoader, meta
 
 from stealer.__version__ import (
@@ -14,6 +16,7 @@ from stealer.constants import (
     DEFAULT_TEMPLATE_FILE,
     DEFAULT_TEMPLATES_DIRECTORY,
 )
+from stealer.utils import io
 
 
 def parse_args(args: Sequence[str]) -> argparse.Namespace:
@@ -42,9 +45,21 @@ def get_keys(env: Environment, content: str) -> Iterable[str]:
     return meta.find_undeclared_variables(parsed_content)
 
 
+def print_positive(*values: str):
+    io.print_colored(
+        *values,
+        color=colorama.Fore.LIGHTGREEN_EX,
+    )
+
+
 def main(args: Sequence[str] = None):
     if args is None:
         args = sys.argv[1:]
+
+    io.print_art(
+        __title__,
+        color=colorama.Fore.RED,
+    )
 
     namespace = parse_args(args=args)
 
@@ -56,7 +71,7 @@ def main(args: Sequence[str] = None):
     env = Environment(loader=FileSystemLoader(namespace.directory))
     template = env.get_template(namespace.template)
 
-    print(f"[+] Template Loaded: {template}")
+    print_positive(f"[+] Template Loaded: {template}")
 
     with open(path, "r") as file:
         content = file.read()
@@ -65,7 +80,7 @@ def main(args: Sequence[str] = None):
         env=env,
         content=content,
     )
-    print(f"[+] Found Keys: {", ".join(keys)}\n")
+    print_positive(f"[+] Found Keys: {", ".join(keys)}\n")
 
     values = {
         "cwd": os.getcwd(),
@@ -73,22 +88,27 @@ def main(args: Sequence[str] = None):
     }
 
     for key in keys:
-        print(f"[{key}]")
-        values[key] = input(">>>")
-        print()
+        if key not in values:
+            print(f"[{key}]")
+            values[key] = input(">>>")
+            print()
 
-    print(f"[+] Values: {' '.join((
+    print_positive(f"[+] Values: {' '.join((
         f'\n{key} = {value}'
         for key, value in values.items()))
     }")
 
-    print("\n[+] Generating...")
+    print_positive("\n[+] Generating...")
 
     payload = template.render(**values)
 
-    print("[+] Payload:")
+    print_positive("[+] Payload:")
 
     print("\n", payload, "\n", sep="")
+
+    pyperclip.copy(payload)
+
+    print_positive("\n[+] Copied to clipboard")
 
     os.system("pause")
 

